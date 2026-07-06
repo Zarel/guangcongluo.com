@@ -1,223 +1,596 @@
 <!DOCTYPE html>
-
-<html xml:lang="en" lang="en">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Guangcong Luo - Portfolio</title>
-    <script>
-    <!--
-      if (document.location.href === 'http://zarel.github.io/') {
-        document.location.replace('http://guangcongluo.com/');
-      }
-    -->
-    </script>
+    <link rel="icon" href="glider_gray.gif" type="image/gif" />
     <style>
-    <!--
-      html {
-        margin: 0;
-        padding: 20px;
-        text-align: center;
-        font-family: Verdana, Arial, Tahoma, sans-serif;
-        font-size: 11pt;
-      }
-      .wrapper {
-        border: 1px solid #818D98;
-        margin: 0 auto 20px auto;
-        padding: 67px 10px 8px 10px;
-        max-width: 8in;
-        text-align: left;
-        position: relative;
-      }
-      .pseudowrapper {
-        border: 1px solid #818D98;
-        margin: 0 auto 20px auto;
-        padding: 1px 10px 8px 10px;
-        max-width: 8in;
-        text-align: left;
-        position: relative;
-      }
-      p {
-        padding: 0 5px;
-        margin: 1em 0;
-      }
-      h1 {
-        font-family: Arial, Tahoma, Verdana, sans-serif;
-        font-size: 14pt;
-        color: #818D98;
-      }
-      h1 .header {
-        display: block;
-        padding: 15px 10px 5px 10px;
-        position: absolute;
-        top: -10px;
-        left: 57px;
-        border-bottom: 1px solid #818D98;
-      }
-      h1 .header span {
-        padding: 15px 10px;
-        margin-left: 5px;
-        border-left: 1px solid #818D98;
-        color: #000000;
-      }
-      h1 img {
-        background: #FFFFFF;
-        position: absolute;
-        top: -10px;
-        left: -10px;
-        border-bottom: 1px solid #818D98;
-        border-right: 1px solid #818D98;
-        padding: 0 0 2px 2px;
-      }
-      h2 {
-        border-bottom: 1px solid #818D98;
-        color: #818D98;
-        padding: 5px;
-        margin: 10px 0;
-        font-size: 13pt;
-        font-weight: bold;
-        font-style: normal;
-      }
-      .thumb {
-        width: 256px;
-        height: 192px;
-        border: 1px solid #AAAAAA;
-        padding: 1px;
-        display: block;
-      }
-      .copyright {
-        text-align: center;
-        color: #999999;
-        font-size: 10pt;
-      }
-      a {
-        color: #3A416B;
-        text-decoration: underline;
-      }
-      a:hover {
-        color: #445599;
-      }
-      .item {
-        clear: left;
-        display: block;
-        text-decoration: none;
-        height: 196px;
-        margin-bottom: 1em;
+      /* Layout: grid and boxes */
+      /**********************************************************************/
 
-        opacity: 0.7;
-        filter: alpha(opacity=70);
-        -webkit-transition: opacity 0.16s linear;
-        -moz-transition: opacity 0.16s linear;
-        -o-transition: opacity 0.16s linear;
-        -ms-transition: opacity 0.16s linear;
-        transition: opacity 0.16s linear;
+      :root {
+        --grid-size: 40px;
+        --grid-thickness: 1px;
+        --grid-x: round(nearest, calc(50vw - var(--grid-size) / 2), 1px);
+        --grid-y: 39px;
+        --page-margin: 24px;
+        --panel-max-space: max(
+          var(--grid-size),
+          min(840px, calc(100vw - var(--page-margin) * 2 - var(--grid-thickness)))
+        );
+        --panel-padding: 10px 20px;
+
+        --grid-line: #78a3db;
+        --grid-cell: #aac6eb;
+        --grid-background: #f3f6f9;
+
+        --panel-background: #ffffff;
+        --ink: #111827;
+        --heading: #52606d;
+        --muted: #6e7984;
+        --link: #0f5db8;
+        --link-underline: rgba(15, 93, 184, 0.35);
+        --link-hover: #063f80;
+        --project-hover-border: #b3c1d3;
+        --project-image-border: #b7c3d0;
+        --copyright: #8a96a3;
+        --panel-width: calc(round(down, calc(var(--panel-max-space) - var(--grid-size)), calc(var(--grid-size) * 2)) + var(--grid-size));
+        --panel-box-width: calc(var(--panel-width) + var(--grid-thickness));
+        --panel-x: max(0px, calc(
+          var(--grid-x) +
+          round(nearest, calc((100vw - var(--panel-width)) / 2 - var(--grid-x)), var(--grid-size))
+        ));
+        --panel-y: calc(var(--grid-size) * 6);
+
+        --glider-highlight: color-mix(in srgb, var(--grid-cell), white 30%);
+        --glider-shade: color-mix(in srgb, var(--grid-cell), #4f78a8 10%);
+        --glider-inset-highlight: rgba(255, 255, 255, 0.65);
+        --glider-inset-shadow: color-mix(in srgb, var(--grid-cell), #3d628f 24%);
+        --glider-side: color-mix(in srgb, var(--grid-cell), #527cad 30%);
+        --glider-bottom: color-mix(in srgb, var(--grid-cell), #3f6b9f 36%);
+        --glider-inset: 3px;
+        --glider-extrude: 12px;
+        --glider-offset: calc(var(--glider-extrude) * -1);
+
+        color-scheme: light dark;
       }
-      .item br {
-        display: none;
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --grid-line: #315a86;
+          --grid-cell: #4178b4;
+          --grid-background: #0c1a29;
+
+          --panel-background: #060b10;
+          --ink: #d8e4f0;
+          --heading: #bfcbd8;
+          --muted: #96a8ba;
+          --link: #86bdff;
+          --link-underline: rgba(134, 189, 255, 0.45);
+          --link-hover: #b8d8ff;
+          --project-hover-border: #40658d;
+          --project-image-border: #49667f;
+          --copyright: #7f91a3;
+
+          --glider-highlight: color-mix(in srgb, var(--grid-cell), #d6ecff 16%);
+          --glider-shade: color-mix(in srgb, var(--grid-cell), #102a45 42%);
+          --glider-inset-highlight: rgba(214, 236, 255, 0.32);
+          --glider-inset-shadow: color-mix(in srgb, var(--grid-cell), #061525 54%);
+          --glider-side: color-mix(in srgb, var(--grid-cell), #10263d 48%);
+          --glider-bottom: color-mix(in srgb, var(--grid-cell), #071726 58%);
+        }
       }
-      .item .thumb {
-        float: left;
+
+      * {
+        box-sizing: border-box;
       }
-      .item .desc {
-        display: block;
-        margin-left: 271px;
-        padding-top: 10px;
-        color: #000000;
+
+      html,
+      body {
+        min-height: 100%;
+        margin: 0;
+        padding: 0;
       }
-      .item .desc strong {
-        display: block;
-        margin-bottom: 8px;
+
+      body {
+        padding-top: calc(var(--panel-y) + var(--grid-y));
+        padding-bottom: var(--grid-size);
+        background-color: var(--grid-background);
+        background-image:
+          linear-gradient(var(--grid-line) var(--grid-thickness), transparent var(--grid-thickness)),
+          linear-gradient(90deg, var(--grid-line) var(--grid-thickness), transparent var(--grid-thickness));
+        background-size: var(--grid-size) var(--grid-size);
+        background-position: var(--grid-x) var(--grid-y);
+        color: var(--ink);
+        /* https://modernfontstacks.com/ "Humanist" */
+        font-family: Seravek, 'Gill Sans Nova', Ubuntu, Calibri, 'DejaVu Sans', source-sans-pro, sans-serif;
       }
-      .item .desc em {
-        font-weight: normal;
+
+      .page {
+        width: var(--panel-box-width);
+        margin-left: var(--panel-x);
+      }
+
+      .panel {
+        width: var(--panel-box-width);
+        height: auto;
+        padding: var(--panel-padding);
+        border: var(--grid-thickness) solid var(--grid-line);
+        background: var(--panel-background);
+        margin-bottom: calc(var(--grid-size) - var(--grid-thickness));
+      }
+
+      .intro-panel {
+        position: relative;
+      }
+
+      .cutout {
+        content: "";
+        position: absolute;
+        pointer-events: none;
+        width: calc(var(--grid-size) + var(--grid-thickness));
+        height: calc(var(--grid-size) + var(--grid-thickness));
+        border: var(--grid-thickness) solid var(--grid-line);
+        background: var(--grid-background);
+      }
+
+      .cutout-1 {
+        left: calc(var(--grid-size) * 1 - 1px);
+        top: calc(var(--grid-size) * 0 - 1px);
+      }
+      .cutout-2 {
+        left: calc(var(--grid-size) * 3 - 1px);
+        top: calc(var(--grid-size) * 0 - 1px);
+      }
+      .cutout-3 {
+        left: calc(var(--grid-size) * 4 - 1px);
+        top: calc(var(--grid-size) * 0 - 1px);
+      }
+      .cutout-7 {
+        left: calc(var(--grid-size) * 0 - 1px);
+        top: calc(var(--grid-size) * 1 - 1px);
+      }
+      .cutout-8 {
+        right: calc(var(--grid-size) * 0 - 1px);
+        bottom: calc(var(--grid-size) * 0 - 1px);
+      }
+
+      .cutout-4 {
+        right: calc(var(--grid-size) * 0 - 1px);
+        top: calc(var(--grid-size) * 0 - 1px);
+      }
+      .cutout-5 {
+        right: calc(var(--grid-size) * 1 - 1px);
+        top: calc(var(--grid-size) * 0 - 1px);
+      }
+      .cutout-6 {
+        right: calc(var(--grid-size) * 2 - 1px);
+        top: calc(var(--grid-size) * 1 - 1px);
+      }
+
+      @supports (height: calc-size(auto, size)) {
+        .panel {
+          height: calc-size(
+            auto,
+            calc(
+              round(up, calc(size - var(--grid-thickness) - var(--grid-size)), calc(var(--grid-size) * 2)) +
+              var(--grid-size) + var(--grid-thickness)
+            )
+          );
+        }
+      }
+
+      @media (max-width: 1199px) {
+        :root {
+          --panel-y: calc(var(--grid-size) * 5);
+        }
+      }
+
+      @media (max-width: 699px) {
+        :root {
+          --panel-y: calc(var(--grid-size) * 4);
+        }
+      }
+
+      /* Glider */
+      /**********************************************************************/
+
+      .life-glider {
+        position: absolute;
+        z-index: 0;
+        top: calc(var(--grid-y) + var(--panel-y) - var(--grid-size) * 4);
+        left: calc(var(--panel-x) + (var(--panel-width) - var(--grid-size) * 3) / 2);
+        width: calc(var(--grid-size) * 3);
+        height: calc(var(--grid-size) * 3);
+        display: grid;
+        grid-template-columns: repeat(3, var(--grid-size));
+        grid-template-rows: repeat(3, var(--grid-size));
+        pointer-events: none;
+      }
+
+      .life-glider span {
+        position: relative;
+        margin: var(--glider-inset);
+        transform: translate(var(--glider-offset), var(--glider-offset));
+        overflow: visible;
+        background:
+          linear-gradient(
+            135deg,
+            var(--glider-highlight),
+            var(--grid-cell) 45%,
+            var(--glider-shade)
+          );
+        box-shadow:
+          inset 1px 1px 0 var(--glider-inset-highlight),
+          inset -1px -1px 0 var(--glider-inset-shadow);
+      }
+
+      .life-glider span::before,
+      .life-glider span::after {
+        content: "";
+        position: absolute;
+        pointer-events: none;
+      }
+
+      .life-glider span::before {
+        top: 0;
+        left: 100%;
+        width: var(--glider-extrude);
+        height: calc(100% + var(--glider-extrude));
+        background: var(--glider-side);
+        clip-path: polygon(
+          0 0,
+          100% var(--glider-extrude),
+          100% 100%,
+          0 calc(100% - var(--glider-extrude))
+        );
+      }
+
+      .life-glider span::after {
+        top: 100%;
+        left: 0;
+        width: calc(100% + var(--glider-extrude));
+        height: var(--glider-extrude);
+        background: var(--glider-bottom);
+        clip-path: polygon(
+          0 0,
+          calc(100% - var(--glider-extrude)) 0,
+          100% 100%,
+          var(--glider-extrude) 100%
+        );
+      }
+
+      .life-glider span:nth-child(1) {
+        grid-column: 2;
+        grid-row: 1;
+      }
+
+      .life-glider span:nth-child(2) {
+        grid-column: 1;
+        grid-row: 2;
+      }
+
+      .life-glider span:nth-child(3) {
+        grid-column: 1;
+        grid-row: 3;
+      }
+
+      .life-glider span:nth-child(4) {
+        grid-column: 2;
+        grid-row: 3;
+      }
+
+      .life-glider span:nth-child(5) {
+        grid-column: 3;
+        grid-row: 3;
+      }
+
+      /* Content: everything inside the boxes */
+      /**********************************************************************/
+
+      h1 {
+        margin: 10px 0;
+        font-family: Georgia, serif;
+        text-align: center;
         font-style: italic;
-        font-size: 9pt;
+        color: var(--heading);
+        font-size: 48px;
       }
-      a.item:hover {
-        opacity: 1.0;
-        filter: alpha(opacity=100);
+
+      h2 {
+        margin: 10px 0 20px;
+        color: var(--heading);
+        border-bottom: var(--grid-thickness) solid var(--grid-line);
+        font-size: 28px;
+        padding-bottom: 2px;
       }
-    -->
+
+      h3 {
+        margin-top: 0;
+        margin-bottom: 8px;
+        font-size: 20px;
+      }
+
+      p {
+        font-size: 17px;
+        line-height: 1.4;
+      }
+
+      p:last-child {
+        margin-bottom: 0;
+      }
+
+      a {
+        color: var(--link);
+        text-decoration-color: var(--link-underline);
+        text-underline-offset: 4px;
+      }
+
+      a:hover {
+        color: var(--link-hover);
+        text-decoration-color: currentColor;
+      }
+
+      .project-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .project-list li {
+        margin: 12px 0;
+      }
+
+      .project {
+        display: grid;
+        grid-template-columns: 206px 1fr;
+        gap: 22px;
+        align-items: start;
+        color: inherit;
+        text-decoration: none;
+        border: 1px solid transparent;
+        margin: 0 -10px;
+        padding: 7px 10px;
+      }
+
+      a.project:hover {
+        color: inherit;
+        border-color: var(--project-hover-border);
+        background: var(--grid-background);
+      }
+      a.project:hover h3 {
+        color: var(--link-hover);
+      }
+
+      .project img {
+        width: 206px;
+        max-width: 100%;
+        height: auto;
+        border: 1px solid var(--project-image-border);
+      }
+
+      .project p {
+        margin-bottom: 10px;
+        font-size: 15px;
+      }
+
+      .project em {
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: normal;
+      }
+
+      .copyright {
+        margin-top: 36px;
+        color: var(--copyright);
+        font-size: 14px;
+      }
+
+      @media (max-width: 600px) {
+        .cutout-2, .cutout-3 {
+          display: none;
+        }
+      }
+
+      @media (max-width: 499px) {
+        h1 {
+          font-size: 38px;
+          line-height: 1.08;
+        }
+
+        h2 {
+          font-size: 28px;
+        }
+
+        p {
+          font-size: 16px;
+          line-height: 1.48;
+        }
+
+        .project {
+          grid-template-columns: 1fr;
+          gap: 14px;
+        }
+
+        .project img {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 349px) {
+        h1 {
+          font-size: 34px;
+        }
+
+        h2 {
+          font-size: 25px;
+        }
+
+        .project-list li {
+          margin: 10px 0;
+        }
+      }
     </style>
-    <!--[if IE 6]>
-    <script type="text/javascript">
-      // Hack for max width on IE6
-      function resize()
-      {
-        document.body.style.width = (document.documentElement.clientWidth > 800 ? "738px" : "auto");
-      }
-      window.onresize = resize;
-      window.onload = resize;
-    </script>
-    <![endif]-->
   </head>
   <body>
-    <div class="wrapper">
-      <h1>
-        <img src="glider_gray.gif" alt="" />
-        <span class="header">Guangcong Luo <span>Portfolio</span></span>
-      </h1>
-      <p>
-        Hi. I'm Guangcong Luo. I develop software, both desktop software and Web applications. Here's some of the work I've done.
-      </p>
+    <div class="life-glider" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
-    <div class="pseudowrapper">
-      <h2>Projects I've created</h2>
-      <p>
-        These are projects that are completely or mostly my work - since some of them are open-source projects, others have contributed various things, but everything major was done by me.
-      </p>
-      <div><a href="http://pokemonshowdown.com/" target="_blank" class="item">
-        <img src="preview_ps.png" alt="" class="thumb" /><br />
-        <span class="desc"><strong>Pokemon Showdown! <em>pokemonshowdown.com</em></strong> By far my largest project. An online Pokemon battle simulator.</span>
-        <span class="desc">Did everything: UI, graphics engine, game engine, website, authentication system, and scaled it up to handle thousands of concurrent users.</span>
-        <span class="desc">9 million visits/month, 20000 peak concurrent users, 1300 GitHub forks.</span>
-      </a></div>
-      <!--div><a href="http://pokemonshowdown.com/forum/forum" target="_blank" class="item">
-        <img src="preview_psforums.png" alt="" class="thumb" /><br />
-        <span class="desc"><strong>Showdown! Forums <em>pokemonshowdown.com/forum/forum</em></strong> An innovative approach to navigating webforums, by spatially moving through columns.</span>
-      </a></div-->
-      <div><a href="https://github.com/Zarel/filecharger" target="_blank" class="item">
-        <img src="preview_fileman.gif" alt="" class="thumb" /><br />
-        <span class="desc"><strong>Filecharger <em>filecharger.com</em></strong> An online file manager with an easy-to-use interface.</span>
-      </a></div>
-      <div><a href="http://qmarkai.com/" target="_blank" class="item">
-        <img src="preview_qmark.gif" alt="" class="thumb" /><br />
-        <span class="desc"><strong>QuestionMark AI <em>qmarkai.com</em></strong> A chat bot that answers your questions, be they "Who is God?" or "What is the meaning of life?". Intended to be a smarter Magic 8-Ball. I made the original version when I was 13.</span>
-      </a></div>
-      <div><a href="http://guangcongluo.com/cite/" target="_blank" class="item">
-        <img src="preview_cite.gif" alt="" class="thumb" /><br />
-        <span class="desc"><strong>Cite-O-Matic <em>&ndash;</em></strong> A citation generator, for 'Works Cited' sections of essays in MLA or APA format. Interesting fact: Works in IE5, and is the only single-page JavaScript web application I know of that did.</span>
-      </a></div>
-      <!-- div><a href="http://aesoft.org/ftp/" target="_blank" class="item">
-        <img src="preview_ftp.gif" alt="" class="thumb" /><br />
-        <span class="desc"><strong>&AElig;soft FTP <em>aesoft.org/ftp</em></strong> A web-based FTP client that uses the Filecharger interface.</span>
-      </a></div -->
-      <div><span class="item">
-        <img src="preview_wzsite.gif" alt="" class="thumb" /><br />
-        <span class="desc"><strong>Warzone 2100 website <em>wz2100.net</em></strong> The website for the game Warzone 2100.</span>
-        <span class="desc">(The current version of wz2100.net is no longer designed by me.)</span>
-      </span></div>
-    </div>
-    <div class="pseudowrapper">
-      <h2>Projects I've contributed to</h2>
-      <div><a href="http://wz2100.net/" target="_blank" class="item">
-        <img src="preview_wz.gif" alt="" class="thumb" /><br />
-        <span class="desc"><strong>Warzone 2100 <em>wz2100.net</em></strong> A real-time strategy game where the player commands the forces of "The Project" in a battle to rebuild the world.</span>
-      </a></div>
-      <p>
-        I was a developer for Warzone 2100 from 2009 to 2011. I maintained game balance and documentation (see above), and have <a href="http://developer.wz2100.net/search?q=Zarel&amp;noquickjump=1&amp;ticket=on&amp;changeset=on&amp;milestone=on&amp;wiki=on">contributed</a> artwork, AI improvements, interface improvements, documentation, and many bugfixes.
-      </p>
-    </div>
-    <div class="pseudowrapper">
-      <h2>Github</h2>
-      <p>
-        <a href="https://github.com/Zarel" target="_blank">My Github username is also Zarel</a>, although few of my projects are currently there. <a href="https://github.com/Zarel/Pokemon-Showdown" target="_blank">Pokemon Showdown</a> is, though.
-      </p>
-      <p>
-        I've submitted a few bug patches to open source projects on Github, when I've encountered problems with using them.
-      </p>
-    </div>
-    <p class="copyright">
-      &copy; Guangcong Luo 2009&ndash;2018
-    </p>
+    <main class="page" aria-label="Portfolio">
+      <section class="panel intro-panel">
+        <span class="cutout cutout-1"></span><span class="cutout cutout-2"></span><span class="cutout cutout-3"></span><span class="cutout cutout-4"></span><span class="cutout cutout-5"></span><span class="cutout cutout-6"></span><span class="cutout cutout-7"></span><span class="cutout cutout-8"></span>
+        <h1>Zarel</h1>
+        <p>
+          Hi. I'm Guangcong Luo, better known as Zarel. I develop software, both desktop software and Web
+          applications. Here's some of the work I've done.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2 id="created">Projects I've created</h2>
+        <p>
+          These are projects that are completely or mostly my work - since some of
+          them are open-source projects, others have contributed various things,
+          but everything major was done by me.
+        </p>
+        <ul class="project-list">
+          <li>
+            <a class="project" href="http://pokemonshowdown.com/" target="_blank" rel="noreferrer">
+              <img src="preview_ps.png" alt="" />
+              <div>
+                <h3>Pokemon Showdown! <em>pokemonshowdown.com</em></h3>
+                <p>By far my largest project. An online Pokemon battle simulator.</p>
+                <p>Did everything: UI, graphics engine, game engine, website, authentication system, and scaled it up to handle thousands of concurrent users.</p>
+                <p>9 million visits/month, 20000 peak concurrent users, 1300 GitHub forks.</p>
+              </div>
+            </a>
+          </li>
+
+          <li>
+            <a class="project" href="https://github.com/Zarel/filecharger" target="_blank" rel="noreferrer">
+              <img src="preview_fileman.gif" alt="" />
+              <div>
+                <h3>Filecharger <em><s>filecharger.com</s></em></h3>
+                <p>An online file manager with an easy-to-use interface.</p>
+              </div>
+            </a>
+          </li>
+
+          <li>
+            <a class="project" href="http://qmarkai.com/" target="_blank" rel="noreferrer">
+              <img src="preview_qmark.gif" alt="" />
+              <div>
+                <h3>QuestionMark AI <em>qmarkai.com</em></h3>
+                <p>A chat bot that answers your questions, be they "Who is God?" or "What is the meaning of life?". Intended to be a smarter Magic 8-Ball. I made the original version when I was 13.</p>
+              </div>
+            </a>
+          </li>
+
+          <li>
+            <a class="project" href="http://guangcongluo.com/cite/" target="_blank" rel="noreferrer">
+              <img src="preview_cite.gif" alt="" />
+              <div>
+                <h3>Cite-O-Matic <em><s>citeomatic.com</s></em></h3>
+                <p>A citation generator, for 'Works Cited' sections of essays in MLA or APA format. Interesting fact: Works in IE5, and is the only single-page JavaScript web application I know of that did.</p>
+              </div>
+            </a>
+          </li>
+
+          <li>
+            <article class="project">
+              <img src="preview_wzsite.gif" alt="" />
+              <div>
+                <h3>Warzone 2100 website <em>wz2100.net</em></h3>
+                <p>The website for the game Warzone 2100.</p>
+                <p>The current version of wz2100.net is no longer designed by me.</p>
+              </div>
+            </article>
+          </li>
+        </ul>
+      </section>
+
+      <section class="panel">
+        <h2 id="contributed">Projects I've contributed to</h2>
+        <ul class="project-list">
+          <li>
+            <a class="project" href="http://wz2100.net/" target="_blank" rel="noreferrer">
+              <img src="preview_wz.gif" alt="" />
+              <div>
+                <h3>Warzone 2100 <em>wz2100.net</em></h3>
+                <p>A real-time strategy game where the player commands the forces of "The Project" in a battle to rebuild the world.</p>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <p>
+          I was a developer for Warzone 2100 from 2009 to 2011. I maintained game
+          balance and documentation (see above), and have
+          <a href="http://developer.wz2100.net/search?q=Zarel&amp;noquickjump=1&amp;ticket=on&amp;changeset=on&amp;milestone=on&amp;wiki=on">contributed</a>
+          artwork, AI improvements, interface improvements, documentation, and
+          many bugfixes.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2 id="github">Github</h2>
+        <p>
+          <a href="https://github.com/Zarel" target="_blank" rel="noreferrer">My Github username is also Zarel</a>.
+        </p>
+        <p>
+          I've submitted a few bug patches to open source projects on Github, when
+          I've encountered problems with using them.
+        </p>
+        <p class="copyright">&copy; Guangcong Luo 2009-2026</p>
+      </section>
+    </main>
+    <script>
+      if (!window.CSS || !CSS.supports('height', 'calc-size(auto, size)')) {
+        const panels = Array.from(document.querySelectorAll('.panel'));
+        let snapQueued = false;
+
+        function snapPanelHeights() {
+          snapQueued = false;
+
+          const rootStyle = getComputedStyle(document.documentElement);
+          const gridSize = parseFloat(rootStyle.getPropertyValue('--grid-size'));
+          const gridThickness = parseFloat(rootStyle.getPropertyValue('--grid-thickness'));
+          const step = gridSize * 2;
+          const minimumHeight = gridSize + gridThickness;
+
+          for (const panel of panels) panel.style.height = 'auto';
+
+          for (const panel of panels) {
+            const naturalHeight = panel.offsetHeight;
+            const snappedHeight = (
+              Math.ceil((naturalHeight - gridThickness - gridSize) / step) * step +
+              gridSize + gridThickness
+            );
+            panel.style.height = `${Math.max(snappedHeight, minimumHeight)}px`;
+          }
+        }
+
+        function queueSnapPanelHeights() {
+          if (snapQueued) return;
+          snapQueued = true;
+          requestAnimationFrame(snapPanelHeights);
+        }
+
+        queueSnapPanelHeights();
+        addEventListener('load', queueSnapPanelHeights);
+        addEventListener('resize', queueSnapPanelHeights);
+
+        for (const image of document.querySelectorAll('.panel img')) {
+          image.addEventListener('load', queueSnapPanelHeights);
+        }
+
+        if (document.fonts) {
+          document.fonts.ready.then(queueSnapPanelHeights);
+        }
+      }
+    </script>
   </body>
 </html>
